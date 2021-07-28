@@ -6,7 +6,7 @@ class ApplicationController < ActionController::API
   end
 
   def encode_token(payload)
-    JWT.encode(payload,'s3cr3t')
+    JWT.encode(payload, Rails.application.credentials.jwt[:secret])
   end
 
   def auth_header
@@ -18,7 +18,7 @@ class ApplicationController < ActionController::API
     if auth_header
       token = auth_header.split(' ').second
       begin
-        JWT.decode(token, 's3cr3t', true, algorithm: 'HS256')
+        JWT.decode(token, Rails.application.credentials.jwt[:secret], true, algorithm: 'HS256')
         return true
       rescue JWT::DecodeError
         Rails.logger.warn "Error decoding the JWT: #{ e.to_s }"
