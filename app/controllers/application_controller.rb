@@ -17,7 +17,6 @@ class ApplicationController < ActionController::API
   def valid_token?
     if auth_header
       token = auth_header.split(' ').second
-
       begin
         JWT.decode(token, 's3cr3t', true, algorithm: 'HS256')
         return true
@@ -27,7 +26,6 @@ class ApplicationController < ActionController::API
       else
         return false
       end
-
     end
   end
 
