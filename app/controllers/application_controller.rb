@@ -18,7 +18,7 @@ class ApplicationController < ActionController::API
     if auth_header
       token = auth_header.split(' ').second
       begin
-        JWT.decode(token, Rails.application.credentials.jwt[:secret], true, algorithm: 'HS256')
+        JWT.decode(token, Rails.application.credentials.jwt[:secret], true, algorithm: Rails.application.credentials.jwt[:algorithm])
         return true
       rescue JWT::DecodeError
         Rails.logger.warn "Error decoding the JWT: #{ e.to_s }"
