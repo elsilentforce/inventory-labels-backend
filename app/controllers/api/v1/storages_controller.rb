@@ -2,11 +2,15 @@ module Api
   module V1
     class StoragesController < ApplicationController
       def index
-        @storages = Storage.all
-        render json: @storages
+        @storages = Storage.filter(filtering_(params))
+        render json: @storages, status: :ok
       end
     
       private
+      def filtering_(params)
+        params.slice(:description)
+      end
+
       def set_storage
         @storage = Storage.find(params[:id])
       end
